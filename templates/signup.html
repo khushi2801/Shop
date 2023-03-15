@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %} Signup
+{% endblock %}
+
+{% block style %}
+.no-bullets li {
+list-style-type: none;
+display: inline-block;
+margin-right: 20px
+}
+{% endblock %}
+
+{% block content %}
+<section class="vh-100 bg-image"
+    style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100 w-50">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-5">Create Account</h2>
+
+                            <div class="text-center my-0">Are you a Customer or Product Admin?</div>
+
+                            
+
+                            <form method="POST">
+
+                                {% csrf_token %}
+
+                                <div class="container">
+                                    {% for field in signup_form %}
+                                    <div class="form-outline mb-1">
+                                        <label class="form-label"> </label>
+                                        {{ field }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+
+
+                                <div class="container text-justify-center mt-5" style="color: red;">
+                                    {% for error in error_list %}
+                                    <li> {{ error }} </li>
+                                    {% endfor %}
+                                </div>
+
+                                <div class="d-flex justify-content-center mt-5">
+                                    <button type="submit" class="btn btn-primary">Create</button>
+                                </div>
+
+                                <p class="text-center text-muted mt-5 mb-0">Already have an account? <a
+                                        href="/clothstore/login">Login</a></p>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% comment %}
+<!-- Name -->
+<div class="form-outline mb-2">
+    <label class="form-label" for="name"></label>
+    <input type="text" id="name" class="form-control" name="name" placeholder="Enter your name"></input>
+</div>
+
+<!-- Email -->
+<div class="form-outline mb-2">
+    <label class="form-label" for="email"></label>
+    <input type="email" id="email" class="form-control" name="email" placeholder="Enter your email"></input>
+</div>
+
+<!-- Password -->
+<div class="form-outline mb-2">
+    <label class="form-label" for="password1"></label>
+    <input type="password" id="password1" class="form-control" name="password1" placeholder="Enter password"></input>
+</div>
+
+<!-- Confirm Password -->
+<div class="form-outline mb-2">
+    <label class="form-label" for="password2"></label>
+    <input type="password" id="password2" class="form-control" name="password2" placeholder="Confirm password"></input>
+</div> {% endcomment %}
