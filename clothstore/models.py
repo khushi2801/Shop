@@ -1,9 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, UserManager
 import datetime
+from django.conf import settings
+from phonenumber_field.modelfields import PhoneNumberField  
 
-# Create your models here.
-class myUserManager(UserManager):
+
+class MyUserManager(UserManager):
     def create_user(self, name, email, password=None, **kwargs):
         if not email:
             raise ValueError('Users must have an email address')
@@ -19,21 +21,20 @@ class myUserManager(UserManager):
         
         return self.create_user(name, email, password, **kwargs)
 
-class myUser(AbstractUser):
+class MyUser(AbstractUser):
     user_type = models.CharField(max_length=20)
     username = None # Removing username field as Email is used as unique identifier
     name = models.CharField(max_length=50, null=False)
     email = models.EmailField(unique=True, null=False)
 
-    objects = myUserManager()
+    objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
     
-    
 class Product(models.Model):
-    product_admin = models.ForeignKey(myUser, on_delete=models.CASCADE)
+    product_admin = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     category = models.CharField(max_length=20, null=False)
     name = models.CharField(max_length=50, null=False)
     brand = models.CharField(max_length=50, null=False)
@@ -42,4 +43,13 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=False)
     date = models.DateField(default=datetime.date.today)
 
-   
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='profile')
+    dob = models.DateField(null=True)
+    address = models.CharField(max_length=150, null=True, blank=True)
+    city = models.CharField(max_length=50, null=True, blank=True)
+    country = models.CharField(max_length=50, null=True, blank=True)
+    contact = PhoneNumberField(unique=True, null=True, blank=True)
+    pin = models.PositiveIntegerField(null=True, blank=True)
+    image = models.ImageField(upload_to='profile_images/', default='profile.png', null=True, blank=True)
