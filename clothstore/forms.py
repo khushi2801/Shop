@@ -1,7 +1,8 @@
 from django import forms
-from .models import myUser, Product
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import MyUser, Product, UserProfile
+from django.contrib.auth.forms import UserCreationForm
+from phonenumber_field.formfields import PhoneNumberField
+# from bootstrap_datepicker_plus import DatePickerInput
 
 USER_TYPE_CHOICES = (
     ('customer', 'Customer'), 
@@ -24,8 +25,8 @@ PRODUCT_SIZE_CHOICES = (
     )
 
 
+# Form to take user details during signup
 class UserForm(UserCreationForm):
-
     user_type = forms.ChoiceField(required=True, widget=forms.RadioSelect(attrs={'class': 'no-bullets'}), choices=USER_TYPE_CHOICES)
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus':'autofocus', 'placeholder': 'Enter your name'}))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
@@ -33,7 +34,7 @@ class UserForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm password'}))
     
     class Meta:
-        model = myUser
+        model = MyUser
         fields = ['user_type', 'name', 'email', 'password1', 'password2']
 
     # Clean Validation Function
@@ -43,14 +44,14 @@ class UserForm(UserCreationForm):
         return self.cleaned_data
 
 
+# Form to take user details during login
 class UserAuthenticationForm(forms.Form):
-
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}))
 
 
+# Form to take product details during add and update product
 class ProductForm(forms.ModelForm):    
-
     class Meta:
         model = Product
         fields = ['category', 'name', 'brand', 'size', 'price', 'image']
@@ -62,3 +63,28 @@ class ProductForm(forms.ModelForm):
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter price'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Upload Image'}),
         }
+
+
+# Form to take user details during profile update
+class UserUpdateForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus':'autofocus', 'placeholder': 'Enter your name'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
+
+    class Meta:
+        model = MyUser
+        fields = ['name', 'email']
+
+
+# Form to take user additional details during profile update
+class ProfileUpdateForm(forms.ModelForm):
+    dob = forms.DateField(label="Date of Birth", widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Enter Date of Birth'}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter address'}))
+    city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter city'}))
+    country = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter country'}))
+    contact = PhoneNumberField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}))
+    pin = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter pincode'}))
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Upload Image'}))
+
+    class Meta:
+        model = UserProfile
+        fields = ['dob', 'address', 'city', 'country', 'contact', 'pin', 'image']

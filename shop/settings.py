@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clothstore',
     'debug_toolbar',
+    'phonenumber_field',
+    'bootstrap4',
+    'bootstrap_datepicker_plus',
 ]
 
 MIDDLEWARE = [
@@ -139,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     'django.contrib.auth.backends.ModelBackend',
 #     ]
 
-AUTH_USER_MODEL = 'clothstore.myUser'
+AUTH_USER_MODEL = 'clothstore.MyUser'
 
 # LOGIN_REDIRECT_URL = 'home/'
 
