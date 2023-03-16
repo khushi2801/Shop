@@ -5,146 +5,87 @@
 
 {% block content %}
 
+<div class="container text-center mt-5">
+    {% for message in messages %}
+    <strong> {{ message }} </strong> <br>
+    {% endfor %}
+</div>
 
-{% comment %}
+{% comment %} {% if user.is_authenticated %}
+<div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
+    <strong>Welcome {{ user.name }} </strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %} {% endcomment %}
 
-<body class="d-flex flex-column min-vh-100"> {% endcomment %}
-    {% comment %} {% load static %} {% endcomment %}
-
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/clothstore/dashboard/">Shop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/clothstore/dashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/add_product">Add Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/view_products">View Products</a>
-                    </li>
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact Me</a>
-                    </li> {% endcomment %}
-                </ul>
-
-                <ul class="navbar-nav  mb-2 mb-lg-0">
-                    {% if user.is_authenticated %}
-    
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/profile">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/logout">Logout</a>
-                    </li>
-    
-                    {% else %}
-    
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/login">Login</a>
-                    </li>
-    
-                    {% endif %}
-                </ul>
-                
+{% comment %} <div class="container-fluid px-0 mb-3">
+    <div id="carouselExampleIndicators" class="carousel slide">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static '/images/img1.jpg' %}" class="d-block w-100" alt="..." height="650">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static '/images/img2.jpg' %}" class="d-block w-100" alt="..." height="650">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static '/images/img3.jpg' %}" class="d-block w-100" alt="..." height="650">
             </div>
         </div>
-    </nav>
-
-    <div class="container text-center mt-5">
-        {% for message in messages %}
-            <strong> {{ message }} </strong> <br>
-        {% endfor %}
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
     </div>
-    
+</div> {% endcomment %}
 
-    {% comment %} {% if user.is_authenticated %}
-    <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
-        <strong>Welcome {{ user.name }} </strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+{% comment %} <h2 class="text-center">Me at a glance</h2>
+
+<div class="my-3 d-flex justify-content-center">
+    <div class="row">
+        <div class="col-md-4 px-5">
+            <div class="card text-bg-primary" style="width: 18rem;">
+                <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
+                <div class="card-body" align="center">
+                    <h5 class="card-title">Python Developer</h5>
+                    <p class="card-text">Developed projects using Flask and Django frameworks.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 px-5">
+            <div class="card text-bg-primary" style="width: 18rem;">
+                <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
+                <div class="card-body" align="center">
+                    <h5 class="card-title">AI Developer</h5>
+                    <p class="card-text">Developed Supervised and Unsupervised ML models.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 px-5">
+            <div class="card text-bg-primary" style="width: 18rem;">
+                <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
+                <div class="card-body" align="center">
+                    <h5 class="card-title">Designer</h5>
+                    <p class="card-text">Designed web pages for projects using HTML and CSS.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endif %} {% endcomment %}
+</div> {% endcomment %}
 
-
-    {% comment %} <div class="container-fluid px-0 mb-3">
-        <div id="carouselExampleIndicators" class="carousel slide">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{% static '/images/img1.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static '/images/img2.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static '/images/img3.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div> {% endcomment %}
-
-    {% comment %} <h2 class="text-center">Me at a glance</h2>
-
-    <div class="my-3 d-flex justify-content-center">
-        <div class="row">
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">Python Developer</h5>
-                        <p class="card-text">Developed projects using Flask and Django frameworks.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">AI Developer</h5>
-                        <p class="card-text">Developed Supervised and Unsupervised ML models.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">Designer</h5>
-                        <p class="card-text">Designed web pages for projects using HTML and CSS.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
-
-    {% comment %} <footer class="mt-auto text-center text-light bg-dark py-1">
-        <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
-    </footer> {% endcomment %}
-
-    {% endblock %}
+{% endblock %}

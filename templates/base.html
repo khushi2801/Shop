@@ -11,8 +11,13 @@
   </title>
 
   <style>
-    {% block style %}
-    {% endblock %}
+    {
+      % block style %
+    }
+
+      {
+      % endblock %
+    }
   </style>
 
   <!-- CSS only -->
@@ -21,11 +26,65 @@
 </head>
 
 <body>
+
+  {% if request.path != '/clothstore/login/' and request.path != '/clothstore/signup/' %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/clothstore/dashboard/">Shop</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+          class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/dashboard/' %}active{% endif %}"
+              href="/clothstore/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/add_product/' %}active{% endif %}"
+              href="/clothstore/add_product">Add Product</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/view_products/' %}active{% endif %}"
+              href="/clothstore/view_products">View Products</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav  mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/profile/' %}active{% endif %}"
+              href="/clothstore/profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/clothstore/logout">Logout</a>
+          </li>
+
+          {% else %}
+
+          <li class="nav-item">
+            <a class="nav-link" href="/clothstore/login">Login</a>
+          </li>
+
+          {% endif %}
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+
   {% block content %}
   {% endblock %}
 
   {% comment %} {% block javascript%}
   {% endblock %} {% endcomment %}
+
+  <footer class="fixed-bottom mt-auto text-center text-light bg-dark py-1">
+    <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
+  </footer>
 </body>
 
 </html>
