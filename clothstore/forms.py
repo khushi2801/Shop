@@ -2,26 +2,25 @@ from django import forms
 from .models import MyUser, Product, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
-# from bootstrap_datepicker_plus import DatePickerInput
 
 USER_TYPE_CHOICES = (
-    ('customer', 'Customer'), 
-    ('productAdmin', 'Product Admin'),
+    ('Customer', 'Customer'), 
+    ('ProductAdmin', 'Product Admin'),
     )
 
 PRODUCT_CATEGORY_CHOICES = (
-    ('tops', 'Tops'),
-    ('shirts', 'Shirts'),
-    ('trousers', 'Trousers'),
-    ('jeans', 'Jeans'),
+    ('Tops', 'Tops'),
+    ('Shirts', 'Shirts'),
+    ('Trousers', 'Trousers'),
+    ('Jeans', 'Jeans'),
     )
 
 PRODUCT_SIZE_CHOICES = (
-    ('xs', 'XS'),
-    ('s', 'S'), 
-    ('l', 'L'),
-    ('xl', 'XL'), 
-    ('xxl', 'XXL'),
+    ('XS', 'XS'),
+    ('S', 'S'), 
+    ('L', 'L'),
+    ('XL', 'XL'), 
+    ('XXL', 'XXL'),
     )
 
 
@@ -81,8 +80,8 @@ class ProfileUpdateForm(forms.ModelForm):
     address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter address'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter city'}))
     country = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter country'}))
-    contact = PhoneNumberField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}))
-    pin = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter pincode'}))
+    contact = PhoneNumberField(region="IN", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}))
+    pin = forms.CharField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Enter pincode'}))
     image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Upload Image'}))
 
     class Meta:

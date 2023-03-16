@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from clothstore.models import Product
+from clothstore.models import Product, UserProfile
 from .forms import UserForm, UserAuthenticationForm, ProductForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -26,7 +26,7 @@ def signup_view(request):
                 email=form.cleaned_data['email'], password=form.cleaned_data['password1'])
             login(request, user)
             messages.success(request, f"Welcome {user.name}")
-            if form.cleaned_data['user_type'] == "productAdmin":
+            if form.cleaned_data['user_type'] == "ProductAdmin":
                 return redirect("/clothstore/dashboard")
             else:
                 return redirect("/clothstore/home")
@@ -74,12 +74,16 @@ def logout_view(request):
 # View for displaying profile details
 @login_required
 def profile_view(request):
-    return render(request, "profile.html")
+    # u = UserProfile.objects.get(id=request.user.id)
+    
+    user_data = model_to_dict(request.user.profile)
+    print(user_data)
+    return render(request, "profile.html", {"user_data": user_data})
 
 
 # View for updating product detail
 @login_required
-def update_profile_view(request, user_id):
+def update_profile_view(request):
     if request.method == "POST":
         u_form = UserUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
         p_form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=request.user.profile)
@@ -88,8 +92,6 @@ def update_profile_view(request, user_id):
             p_form.save()
             messages.success(request, f"Profile details updated successfully")
             return redirect("/clothstore/profile/")
-        else:
-            messages.success(request, f"Invalid information! Please enter correct details")
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm(instance=request.user.profile)
@@ -142,7 +144,8 @@ def view_products_view(request):
 @login_required
 def product_detail_view(request, product_id):
     p = Product.objects.get(id=product_id)
-    return render(request, "product_detail.html", {"product": p})
+    product = model_to_dict(p)
+    return render(request, "product_detail.html", {"product": product})
 
 
 # View for updating product detail
