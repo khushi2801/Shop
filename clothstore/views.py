@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from clothstore.models import Product, UserProfile
+from clothstore.models import Product, UserProfile, Cart, Order, OrderItem
 from .forms import UserForm, UserAuthenticationForm, ProductForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -41,17 +41,14 @@ def signup_view(request):
 def login_view(request):
     if request.method == "POST":
         form = UserAuthenticationForm(request.POST)
-        error_list = re.sub(r'\*\s*(__all__)\n', '', form.errors.as_text())
-        error_list = list(re.sub(r'\*.*?', '', error_list).split("\n"))
         if form.is_valid():
             user = authenticate(
                 email=form.cleaned_data['email'], password=form.cleaned_data['password'])
             if user is not None:
                 login(request, user)
                 messages.info(request, f"Welcome {user.name}")
-                if user.user_type == "productAdmin":
+                if user.user_type == "ProductAdmin":
                     return redirect("/clothstore/dashboard/")
-                    # return redirect("/clothstore/dashboard/" + user.name)
                 else:
                     return redirect("/clothstore/home/")
             else:
@@ -73,11 +70,8 @@ def logout_view(request):
 
 # View for displaying profile details
 @login_required
-def profile_view(request):
-    # u = UserProfile.objects.get(id=request.user.id)
-    
+def profile_view(request):    
     user_data = model_to_dict(request.user.profile)
-    print(user_data)
     return render(request, "profile.html", {"user_data": user_data})
 
 
@@ -99,6 +93,7 @@ def update_profile_view(request):
 
 
 # Product Admin side
+# Dashboard view
 @login_required
 def dashboard_view(request):
     return render(request, "dashboard.html")
@@ -185,5 +180,81 @@ def delete_product_view(request, product_id):
 
 
 # Customer side
+# Home view
+@login_required
 def home_view(request):
-    return render(request, "home.html")
+    product_list = Product.objects.all()
+    return render(request, "home.html", {"product_list": product_list})
+
+
+@login_required
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = Cart.objects.filter(user=request.user, product=product).first()     # Check if the user already has this product in their cart
+    if cart_item:
+        cart_item.quantity += 1
+        cart_item.final_item_price += product.price
+        cart_item.save()
+        messages.success(request, f"{product.name} added to cart")
+    else:
+        new_cart_item = Cart(user=request.user, product=product, quantity=1, final_item_price=product.price)
+        new_cart_item.save()
+        messages.success(request, f"{product.name} added to cart")
+    return redirect('/clothstore/home/')
+    
+
+def buy_now_view(request, product_id):
+    if request.method == 'POST':
+        product = Product.objects.get(id=product_id)
+        quantity = request.POST.get('quantity')
+        order_total = product.price * int(quantity)
+        Order.objects.create(user=request.user, product=product, quantity=quantity, order_total=order_total)
+        # cart_items = request.session.get('cart_items', [])
+        # cart_items.append(product_id)
+        # request.session['cart_items'] = cart_items
+        return redirect('/clothstore/my_order')
+    else:
+        product = Product.objects.get(id=product_id)
+        return render(request, 'buy_now.html', {'product': product})
+
+
+# View for displaying orders
+@login_required
+def my_order_view(request):
+    orders = Order.objects.filter(user=request.user)
+    return render(request, "my_order.html", {"orders": orders})
+
+
+@login_required
+def cancel_order(request):
+    orders = Order.objects.filter(user=request.user)
+    orders.delete()
+    print(orders)
+    return render(request, "my_order.html", {"orders": orders})
+
+
+# View for displaying cart items
+@login_required
+def cart_view(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total_cart_price = sum(item.final_item_price for item in cart_items)
+    return render(request, "cart.html", {'cart_items': cart_items, 'total_cart_price': total_cart_price})
+
+
+@login_required
+def checkout(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    order_items = []
+    total_order_price = 0
+    for item in cart_items:
+        final_item_price = item.product.price*item.quantity
+        total_order_price += final_item_price
+    order = Order(user=request.user, total_price=total_order_price)
+    order.save()
+    for item in cart_items:
+        final_item_price = item.product.price*item.quantity
+        order_item = OrderItem(order=order, product=item.product, quantity=item.quantity, final_item_price=final_item_price)
+        order_items.append(order_item) 
+    OrderItem.objects.bulk_create(order_items)
+    cart_items.delete()
+    return redirect("/clothstore/home/")

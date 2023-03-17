@@ -22,4 +22,11 @@ urlpatterns = [
 
     # Customer side
     path('home/', views.home_view, name='home'),
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('my_order/', views.my_order_view, name='my_order'),
+    path('cancel_order/', views.cancel_order, name='cancel_order'),
+    path('cart/', views.cart_view, name='cart'),
+    path('checkout/', views.checkout, name='checkout'),
+    
+    path('buy_now/<int:product_id>', views.buy_now_view, name='buy_now'),
 ]

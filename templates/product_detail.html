@@ -47,6 +47,8 @@
     </div>
 </div>
 
+{% if request.user.user_type == "ProductAdmin" %}
+
 <div class="text-center">
     <div class="btn-group mt-5">
         <div class="mx-3">
@@ -59,6 +61,23 @@
         </div>
     </div>
 </div>
+
+{% elif request.user.user_type == "Customer" %}
+
+<div class="text-center">
+    <div class="btn-group">
+        <div class="mx-3">
+            <button type="submit" class="btn btn-primary"
+                onclick="location.href='{% url 'clothstore:add_to_cart' product.id %}'">Add to cart</button>
+        </div>
+        <div class="mx-3">
+            <button type="submit" class="btn btn-primary"
+                onclick="location.href='/clothstore/buy_now/{{product.id}}'">Buy Now</button>
+        </div>
+    </div>
+</div>
+
+{% endif %}
 
 <div class="container text-center mt-5">
     {% for message in messages %}

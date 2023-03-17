@@ -1,146 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %} Login
+{% block title %} Home
 {% endblock %}
 
 {% block content %}
 
-
-{% comment %}
-
-<body class="d-flex flex-column min-vh-100"> {% endcomment %}
-    {% comment %} {% load static %} {% endcomment %}
-
-    {% if user.is_authenticated %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Shop</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/home">Home</a>
-                    </li>
-                    {% comment %} <li class="nav-item">
-                        <a class="nav-link" href="/about">About Me</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact Me</a>
-                    </li> {% endcomment %}
-
-                </ul>
-
-                <ul class="navbar-nav  mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/logout">My Account</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/logout">Logout</a>
-                    </li>
-
-                    {% else %}
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clothstore/login">Login</a>
-                    </li>
-
-                    {% endif %}
-                </ul>
-                {% comment %} <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button class="btn btn-outline-danger" type="submit">Logout</button>
-                </form> {% endcomment %}
-
-
-
-                {% comment %} <button class="btn btn-outline-danger" type="submit">Logout</button> {% endcomment %}
-            </div>
-        </div>
-    </nav>
-
-    {% comment %} <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">
-        <strong>Welcome {{ user.name }} !</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div> {% endcomment %}
-
-    {% comment %} <div class="container-fluid px-0 mb-3">
-        <div id="carouselExampleIndicators" class="carousel slide">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{% static '/images/img1.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static '/images/img2.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-                <div class="carousel-item">
-                    <img src="{% static '/images/img3.jpg' %}" class="d-block w-100" alt="..." height="650">
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div> {% endcomment %}
-
-    {% comment %} <h2 class="text-center">Me at a glance</h2>
-
-    <div class="my-3 d-flex justify-content-center">
-        <div class="row">
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">Python Developer</h5>
-                        <p class="card-text">Developed projects using Flask and Django frameworks.</p>
+<div class="row mx-4 my-4">
+    {% for product in product_list %}
+    <div class="col-md-2">
+        <div class="card">
+            <div class="card" style="border: none;">
+                <a class="card-block stretched-link text-decoration-none"
+                    href="{% url 'clothstore:product_detail' product.id %}">
+                    <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.title }}"
+                        style="object-fit: cover; height: 200px;">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.price }}</p>
                     </div>
-                </div>
+                </a>
             </div>
-
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">AI Developer</h5>
-                        <p class="card-text">Developed Supervised and Unsupervised ML models.</p>
+            <div class="text-center my-3">
+                <div class="btn-group">
+                    <div class="mx-3">
+                        <button type="submit" class="btn btn-primary"
+                            onclick="location.href='{% url 'clothstore:add_to_cart' product.id %}'">Add to cart</button>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 px-5">
-                <div class="card text-bg-primary" style="width: 18rem;">
-                    <img src="{% static '/images/card_img.jpg' %}" class="card-img-top" alt="..." height="200">
-                    <div class="card-body" align="center">
-                        <h5 class="card-title">Designer</h5>
-                        <p class="card-text">Designed web pages for projects using HTML and CSS.</p>
+                    <div class="mx-3">
+                        <button type="submit" class="btn btn-primary"
+                            onclick="location.href='/clothstore/buy_now/{{product.id}}'">Buy Now</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div> {% endcomment %}
+    </div>
+    {% endfor %}
+</div>
 
-    {% comment %} <footer class="mt-auto text-center text-light bg-dark py-1">
-        <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
-    </footer> {% endcomment %}
+<div class="container text-center mt-5">
+    {% for message in messages %}
+    <strong> {{ message }} </strong> <br>
+    {% endfor %}
+</div>
 
-    {% endblock %}
+{% endblock %}

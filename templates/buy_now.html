@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Buy
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'buy_now' product.id %}">
+    {% csrf_token %}
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="quantity" value="1">
+    <button type="submit">Buy Now</button>
+</form>
+
+{% endblock %}
