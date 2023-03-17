@@ -43,6 +43,9 @@ class Product(models.Model):
     image = models.ImageField(upload_to='images/', null=False)
     date = models.DateField(default=datetime.date.today)
 
+    def __str__(self):
+        return self.name
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE, related_name='profile')
@@ -53,3 +56,37 @@ class UserProfile(models.Model):
     contact = PhoneNumberField(unique=True, null=True, blank=True)
     pin = models.PositiveIntegerField(null=True, blank=True)
     image = models.ImageField(upload_to='profile_images/', default='profile.png', null=True, blank=True)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    items = models.ManyToManyField(Product, through='OrderItem', related_name='orders')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    # discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    # final_price = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
+    # is_paid = models.BooleanField(default=True)    
+    # order_total = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    final_item_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    final_item_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+
+
+# class CartItem(models.Model):
+#     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     quantity = models.PositiveIntegerField(default=1)
+#     final_item_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)

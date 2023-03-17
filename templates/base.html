@@ -36,6 +36,7 @@
           class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
+        {% if request.user.user_type == "ProductAdmin" %}
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link {% if request.path == '/clothstore/dashboard/' %}active{% endif %}"
@@ -50,6 +51,24 @@
               href="/clothstore/view_products">View Products</a>
           </li>
         </ul>
+
+        {% elif request.user.user_type == "Customer" %}
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/home/' %}active{% endif %}"
+              href="/clothstore/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/my_order/' %}active{% endif %}"
+              href="/clothstore/my_order">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if request.path == '/clothstore/cart/' %}active{% endif %}"
+              href="/clothstore/cart">Cart</a>
+          </li>
+
+        </ul>
+        {% endif %}
 
         <ul class="navbar-nav  mb-2 mb-lg-0">
           {% if user.is_authenticated %}
