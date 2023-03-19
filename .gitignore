@@ -1,15 +1,13 @@
 # Django #
 *.log
 *.pot
-*.pyc
-__pycache__
 db.sqlite3
-media
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # Compiled files
 *.min.css
@@ -21,6 +19,7 @@ __pycache__/
 /media/
 
 # Backup files # 
+*~
 *.bak 
 
 # Visual Studio Code # 
@@ -31,3 +30,6 @@ __pycache__/
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# Virtual environment directory
+myenv/

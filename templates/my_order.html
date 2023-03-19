@@ -7,13 +7,16 @@
 
 <div class="container w-50 mt-3">
 
-    {% if orders %}
-        {% for order in orders %}
+    {% if active_orders or cancel_orders %}
+    {% if active_orders %}
+        <h3 class="my-3 text-center">Active Orders</h3>
+        {% for order in active_orders %}
+        <div class="card shadow p-3 mb-4 bg-white rounded">
             {% for item in order.orderitem_set.all %}
 
-                <div class="card shadow p-3 mb-4 bg-white rounded">
+                <div class="card my-2" style="border: none;">
                     <div class="row no-gutters">
-                        <div class="col-md-4">
+                        <div class="col-md-4 text-center">
                             <img class="border-primary" src="/media/{{ item.product.image }}"
                                 style="object-fit: cover; width: 50%;">
                         </div>
@@ -53,16 +56,97 @@
 
             {% endfor %}
 
-            <div class="text-center">
-                <h4>Total order price: {{ order.total_price }}</h4>
+            <div class="row no-gutters mt-3">
+                <div class="col-md-4">
+                    <h5>Total order price: {{ order.total_price }}</h5>
+                </div>
+                <div class="col-md-8">
+                    <h5>Shipping Details:</h5>
+                    <h6>Billing Address: {{ order.billing_address }}</h6>
+                    <h6>Contact: {{ order.contact }}</h6>
+                    <button type="submit" class="btn btn-danger mt-2" onclick="location.href='{% url 'clothstore:cancel_order' order.id %}'">Change</button>
+                </div>
             </div>
 
-            <div class="d-flex justify-content-center my-4">
-                <button type="submit" class="btn btn-danger" onclick="location.href='/clothstore/cancel_order/'">Cancel
-                    Order</button>
+            <div class="text-center">
+                <div class="btn-group mt-5">
+                    <div class="mx-3">
+                        <button type="submit" class="btn btn-primary"
+                            onclick="location.href='{% url 'clothstore:order_summary' order.id %}'">Order Summary</button>
+                    </div>
+                    <div class="mx-3">
+                        <button type="submit" class="btn btn-danger"
+                            onclick="location.href='{% url 'clothstore:cancel_order' order.id %}'">Cancel Order</button>
+                    </div>
+                </div>
             </div>
-              
+
+        </div>  
         {% endfor %}
+    {% endif %}
+    
+    {% if cancel_orders %}
+        <h3 class="my-3 text-center">Cancelled Orders</h3>
+        {% for order in cancel_orders %}
+        <div class="card shadow p-3 mb-4 bg-white rounded">
+            {% for item in order.orderitem_set.all %}
+
+                <div class="card my-2" style="border: none;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-center">
+                            <img class="border-primary" src="/media/{{ item.product.image }}"
+                                style="object-fit: cover; width: 50%;">
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{ item.product.name }}</h5>
+                            <hr class="mt-2 mb-4">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Price :</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ item.product.price }}
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Quantity :</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ item.quantity }}
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Total Price :</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary">
+                                    {{ item.final_item_price }}
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="row no-gutters mt-3">
+                <div class="col-md-4">
+                    <h5>Total order price: {{ order.total_price }}</h5>
+                </div>
+                <div class="col-md-8">
+                    <h5>Shipping Details:</h5>
+                    <h6>Billing Address: {{ order.billing_address }}</h6>
+                    <h6>Contact: {{ order.contact }}</h6>
+                </div>
+            </div>
+        </div>
+        
+        {% endfor %}
+        {% endif %}
+
     {% else %}
 
     <div class="text-center">

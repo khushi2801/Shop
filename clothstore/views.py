@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from clothstore.models import Product, UserProfile, Cart, Order, OrderItem
+from clothstore.models import Product, Cart, Order, OrderItem
 from .forms import UserForm, UserAuthenticationForm, ProductForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -9,6 +9,9 @@ from django.forms import model_to_dict
 from decimal import Decimal
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models.fields.files import ImageFieldFile
+from django.http import HttpResponse
+from weasyprint import HTML
+from django.template.loader import render_to_string
 
 
 # View for user and product admin signup
@@ -203,34 +206,55 @@ def add_to_cart(request, product_id):
     return redirect('/clothstore/home/')
     
 
-def buy_now_view(request, product_id):
-    if request.method == 'POST':
-        product = Product.objects.get(id=product_id)
-        quantity = request.POST.get('quantity')
-        order_total = product.price * int(quantity)
-        Order.objects.create(user=request.user, product=product, quantity=quantity, order_total=order_total)
-        # cart_items = request.session.get('cart_items', [])
-        # cart_items.append(product_id)
-        # request.session['cart_items'] = cart_items
-        return redirect('/clothstore/my_order')
+# View for adding product to cart and moving to cart view
+@login_required
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = Cart.objects.filter(user=request.user, product=product).first()     # Check if the user already has this product in their cart
+    if cart_item:
+        cart_item.quantity += 1
+        cart_item.final_item_price += product.price
+        cart_item.save()
+        messages.success(request, f"{product.name} added to cart")
     else:
-        product = Product.objects.get(id=product_id)
-        return render(request, 'buy_now.html', {'product': product})
+        new_cart_item = Cart(user=request.user, product=product, quantity=1, final_item_price=product.price)
+        new_cart_item.save()
+        messages.success(request, f"{product.name} added to cart")
+    return redirect('/clothstore/cart/')
 
 
 # View for displaying orders
 @login_required
 def my_order_view(request):
-    orders = Order.objects.filter(user=request.user)
-    return render(request, "my_order.html", {"orders": orders})
+    active_orders = Order.objects.filter(user=request.user, status=True)
+    cancel_orders = Order.objects.filter(user=request.user, status=False)
+    return render(request, "my_order.html", {"active_orders": active_orders, "cancel_orders": cancel_orders})
 
 
+# View for cancelling order
 @login_required
-def cancel_order(request):
-    orders = Order.objects.filter(user=request.user)
-    orders.delete()
-    print(orders)
-    return render(request, "my_order.html", {"orders": orders})
+def cancel_and_print_order(request, order_id):
+    order = Order.objects.get(user=request.user, id=order_id)
+    if 'order_summary' in request.path_info:
+        return render(request, "order_summary.html", {"order": order, "show_print_button": True})
+    elif 'cancel_order' in request.path_info:
+        # Handle the case where the order doesn't exist
+        if order.status:
+            order.status = False
+            order.save()
+            messages.success(request, f"Order Cancelled")
+    return redirect('/clothstore/my_order/')
+
+
+# View for generating order summary pdf
+@login_required
+def generate_pdf(request, order_id):
+    order = Order.objects.get(user=request.user.id, id=order_id)      # Get the order object using the order_id
+    html = render_to_string('order_summary.html', {'order': order, "show_print_button": False})     # Render the template with the order data
+    response = HttpResponse(content_type='application/pdf')     # Create a HttpResponse object with PDF mime type
+    response['Content-Disposition'] = 'filename="order_summary_{}.pdf"'.format(order_id)
+    HTML(string=html).write_pdf(response)      # Use WeasyPrint to convert HTML to PDF
+    return response
 
 
 # View for displaying cart items
@@ -241,6 +265,21 @@ def cart_view(request):
     return render(request, "cart.html", {'cart_items': cart_items, 'total_cart_price': total_cart_price})
 
 
+# View for updating cart items
+@login_required
+def update_cart_items(request, product_id, quantity):
+    product = get_object_or_404(Product, id=product_id)
+    item = Cart.objects.filter(user=request.user, product=product).first()
+    if item and quantity:
+        item.quantity = quantity
+        item.final_item_price = product.price * quantity
+        item.save()
+    elif not quantity:
+        item.delete()
+    return redirect('/clothstore/cart/')
+
+
+# View for checkout items from cart
 @login_required
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -249,8 +288,10 @@ def checkout(request):
     for item in cart_items:
         final_item_price = item.product.price*item.quantity
         total_order_price += final_item_price
-    order = Order(user=request.user, total_price=total_order_price)
+    billing_address = f"{request.user.profile.address}, {request.user.profile.city}, {request.user.profile.state}, {request.user.profile.country}, {request.user.profile.pin}"
+    order = Order(user=request.user, total_price=total_order_price, billing_address=billing_address, contact=request.user.profile.contact)
     order.save()
+    messages.success(request, f"Order placed successfully")
     for item in cart_items:
         final_item_price = item.product.price*item.quantity
         order_item = OrderItem(order=order, product=item.product, quantity=item.quantity, final_item_price=final_item_price)

@@ -52,6 +52,7 @@ class UserProfile(models.Model):
     dob = models.DateField(null=True)
     address = models.CharField(max_length=150, null=True, blank=True)
     city = models.CharField(max_length=50, null=True, blank=True)
+    state = models.CharField(max_length=50, null=True, blank=True)
     country = models.CharField(max_length=50, null=True, blank=True)
     contact = PhoneNumberField(unique=True, null=True, blank=True)
     pin = models.PositiveIntegerField(null=True, blank=True)
@@ -64,6 +65,9 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=True)
+    billing_address = models.CharField(max_length=150, null=True, blank=True)
+    contact = PhoneNumberField(null=True, blank=True)
 
     # discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     # final_price = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
