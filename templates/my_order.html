@@ -64,7 +64,8 @@
                     <h5>Shipping Details:</h5>
                     <h6>Billing Address: {{ order.billing_address }}</h6>
                     <h6>Contact: {{ order.contact }}</h6>
-                    <button type="submit" class="btn btn-danger mt-2" onclick="location.href='{% url 'clothstore:cancel_order' order.id %}'">Change</button>
+                    <button type="submit" class="btn btn-danger mt-2" 
+                        onclick="location.href='{% url 'clothstore:update_shipping_details' order.id %}'">Change</button>
                 </div>
             </div>
 

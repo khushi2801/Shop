@@ -35,7 +35,6 @@ def signup_view(request):
                 return redirect("/clothstore/home")
         else:
             messages.error(request, "Invalid information!")
-            print(messages)
     form = UserForm()
     return render(request, "signup.html", {"signup_form": form, "error_list": error_list})
 
@@ -118,7 +117,6 @@ class CustomJSONEncoder(DjangoJSONEncoder):
 def add_product_view(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
-        print(form.errors.as_json)
         if form.is_valid():
             product = form.save(commit=False)
             product.product_admin = request.user
@@ -155,7 +153,6 @@ def update_product_view(request, product_id):
         if form.is_valid():
             product = form.save(commit=False)
             product.product_admin = request.user
-            print(request.FILES)
             if 'image' in request.FILES:
                 product.image = request.FILES['image']
             product.save()
@@ -166,7 +163,6 @@ def update_product_view(request, product_id):
     else:
         form = ProductForm(instance=obj)
     product_data = json.dumps(model_to_dict(obj), cls=CustomJSONEncoder)
-    print(product_data)
     return render(request, "update_product.html", {"update_product_form": form, "product_data": product_data})
 
 
@@ -233,7 +229,7 @@ def my_order_view(request):
 
 # View for cancelling order
 @login_required
-def cancel_and_print_order(request, order_id):
+def order_operations(request, order_id):
     order = Order.objects.get(user=request.user, id=order_id)
     if 'order_summary' in request.path_info:
         return render(request, "order_summary.html", {"order": order, "show_print_button": True})
