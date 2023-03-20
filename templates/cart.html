@@ -31,8 +31,24 @@
                     <div class="col-sm-3">
                         <h6 class="mb-0">Quantity :</h6>
                     </div>
-                    <div class="col-sm-9 text-secondary">
+                    <div class="col-sm-1">
+                        {% if item.quantity > 1 %}
+                        <button type="button" class="btn btn-primary" 
+                            onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=item.quantity|add:-1 %}'"
+                            style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">-</button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary"
+                            onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=0 %}'"
+                            style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">-</button>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-1 text-secondary text-center" style="margin-left: 10px;">
                         {{ item.quantity }}
+                    </div>
+                    <div class="col-sm-1 text-center">
+                        <button type="button" class="btn btn-primary" 
+                            onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=item.quantity|add:1 %}'"
+                            style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">+</button>
                     </div>
                 </div>
                 <hr class="my-2">
@@ -45,6 +61,10 @@
                     </div>
                 </div>
                 <hr class="my-2">
+                <div class="d-flex mt-4">
+                    <button type="submit" class="btn btn-danger"
+                        onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=0 %}'">Remove</button>
+                </div>
             </div>
         </div>
     </div>

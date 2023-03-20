@@ -80,10 +80,11 @@ class ProfileUpdateForm(forms.ModelForm):
     address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter address'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter city'}))
     country = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter country'}))
+    state = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter state'}))
     contact = PhoneNumberField(region="IN", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}))
     pin = forms.CharField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Enter pincode'}))
     image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class': 'form-control', 'placeholder': 'Upload Image'}))
 
     class Meta:
         model = UserProfile
-        fields = ['dob', 'address', 'city', 'country', 'contact', 'pin', 'image']
+        fields = ['dob', 'address', 'city', 'state', 'country', 'contact', 'pin', 'image']

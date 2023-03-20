@@ -5,18 +5,24 @@
 
 {% block content %}
 
+{% load widget_tweaks %}
+
 <h2 class="text-center mt-5"> Update Details </h2>
 
-<div class="container w-25 mt-3">
+<div class="container w-25 mt-5">
     <form method="POST" enctype="multipart/form-data">
 
         {% csrf_token %}
 
         <div class="container text-center">
             {% for field in update_product_form %}
-            <div class="form-outline mb-2">
-                <label class="form-label"> </label><br>
-                {{ field }}
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <label class="form-label"> {{ field.label }} </label>
+                </div>
+                <div class="col-md-9">
+                    {% render_field field class="form-control" %}
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -27,28 +33,5 @@
 
     </form>
 </div>
-
-<script type="text/javascript">
-    // Pre-populate form fields with data of product to be updated
-    var product_data = {
-        {
-            product_data | safe
-        }
-    };
-    for (var key in product_data) {
-        if (product_data.hasOwnProperty(key)) {
-            var field = document.querySelector('id_' + key);
-            if (field) {
-                if (key == 'image') { // Handle image field separately
-                    var imgField = document.getElementById('[name="' + key + '"]');
-                    imgField.setAttribute('src', '/media/' + product_data[key]);
-                } else {
-                    field.value = product_data[key];
-                }
-            }
-
-        }
-    }
-</script>
 
 {% endblock %}
