@@ -88,3 +88,8 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['dob', 'address', 'city', 'state', 'country', 'contact', 'pin', 'image']
+
+
+# Form to take user additional details during profile update
+class CouponApplyForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Coupon Code'}))

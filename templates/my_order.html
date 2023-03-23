@@ -58,19 +58,22 @@
 
             <div class="row no-gutters mt-3">
                 <div class="col-md-4">
-                    <h5>Total order price: {{ order.total_price }}</h5>
+                    <h6>Total order price: {{ order.total_price }}</h6>
+                    {% if order.discount %}
+                    <h6>Coupon: {{ order.coupon }}</h6>
+                    <h6>Discount: {{ order.discount }}</h6>
+                    <h6>Final order price: {{ order.final_price }}</h6>
+                    {%endif %}
                 </div>
                 <div class="col-md-8">
                     <h5>Shipping Details:</h5>
                     <h6>Billing Address: {{ order.billing_address }}</h6>
                     <h6>Contact: {{ order.contact }}</h6>
-                    <button type="submit" class="btn btn-danger mt-2" 
-                        onclick="location.href='{% url 'clothstore:update_shipping_details' order.id %}'">Change</button>
                 </div>
             </div>
 
             <div class="text-center">
-                <div class="btn-group mt-5">
+                <div class="btn-group mt-3">
                     <div class="mx-3">
                         <button type="submit" class="btn btn-primary"
                             onclick="location.href='{% url 'clothstore:order_summary' order.id %}'">Order Summary</button>
@@ -86,9 +89,9 @@
         {% endfor %}
     {% endif %}
     
-    {% if cancel_orders %}
+    {% if cancelled_orders %}
         <h3 class="my-3 text-center">Cancelled Orders</h3>
-        {% for order in cancel_orders %}
+        {% for order in cancelled_orders %}
         <div class="card shadow p-3 mb-4 bg-white rounded">
             {% for item in order.orderitem_set.all %}
 
@@ -135,7 +138,12 @@
 
             <div class="row no-gutters mt-3">
                 <div class="col-md-4">
-                    <h5>Total order price: {{ order.total_price }}</h5>
+                    <h6>Total order price: {{ order.total_price }}</h6>
+                    {% if order.discount %}
+                    <h6>Coupon: {{ order.coupon }}</h6>
+                    <h6>Discount: {{ order.discount }}</h6>
+                    <h6>Final order price: {{ order.final_price }}</h6>
+                    {%endif %}
                 </div>
                 <div class="col-md-8">
                     <h5>Shipping Details:</h5>

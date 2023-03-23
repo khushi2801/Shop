@@ -11,8 +11,13 @@
   </title>
 
   <style>
-    {% block style %}
-    {% endblock %}
+    {
+      % block style %
+    }
+
+      {
+      % endblock %
+    }
   </style>
 
   {% if '/clothstore/generate_pdf/' not in request.path %}
@@ -20,9 +25,14 @@
   <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css" integrity="sha512-9kBLDtN/klZKugbE/8SSN20Mn+KhKjyN+yRo2QX9Oz+ahx1JZamjOZupgOoD7bPIw+OBdCzy/dYlEZ3qJJ0bGQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endcomment %}
+  {% comment %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/css/bootstrap.min.css"
+    integrity="sha512-9kBLDtN/klZKugbE/8SSN20Mn+KhKjyN+yRo2QX9Oz+ahx1JZamjOZupgOoD7bPIw+OBdCzy/dYlEZ3qJJ0bGQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" /> {% endcomment %}
   <!-- Javascript -->
-  {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.min.js" integrity="sha512-cjBCQGd4IOMnYmIWf8JNzBt/KsXYtMzNtE/8WrxzTtCnsD//7L+PeT0LLf8oO4+V4Q2G3EdYVvmX8+MUxuJ7Rg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> {% endcomment %}
+  {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.1/js/bootstrap.min.js"
+    integrity="sha512-cjBCQGd4IOMnYmIWf8JNzBt/KsXYtMzNtE/8WrxzTtCnsD//7L+PeT0LLf8oO4+V4Q2G3EdYVvmX8+MUxuJ7Rg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> {% endcomment %}
 
   {% endif %}
 
@@ -54,7 +64,7 @@
               href="/clothstore/add_product">Add Product</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/view_products/' %}active{% endif %}"
+            <a class="nav-link {% if request.path == '/clothstore/view_products/' or '/clothstore/product_detail/' in request.path or '/clothstore/update_product/' in request.path or '/clothstore/delete_product/' in request.path %}active{% endif %}"
               href="/clothstore/view_products">View Products</a>
           </li>
         </ul>
@@ -62,11 +72,11 @@
         {% elif request.user.user_type == "Customer" %}
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/home/' %}active{% endif %}"
+            <a class="nav-link {% if request.path == '/clothstore/home/' or '/clothstore/product_detail/' in request.path %}active{% endif %}"
               href="/clothstore/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/my_order/' %}active{% endif %}"
+            <a class="nav-link {% if request.path == '/clothstore/my_order/' or '/clothstore/order_summary/' in request.path %}active{% endif %}"
               href="/clothstore/my_order">Orders</a>
           </li>
           <li class="nav-item">
@@ -109,9 +119,9 @@
   {% endblock %} {% endcomment %}
 
   {% if '/clothstore/generate_pdf/' not in request.path %}
-    <footer class="fixed-bottom mt-auto text-center text-light bg-dark py-1">
-      <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
-    </footer>
+  <footer class="fixed-bottom mt-auto text-center text-light bg-dark py-1">
+    <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
+  </footer>
   {% endif %}
 </body>
 

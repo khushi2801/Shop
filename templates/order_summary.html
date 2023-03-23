@@ -34,7 +34,12 @@
 
         <div class="row no-gutters mt-3">
             <div class="col-md-4">
-                <h5>Total order price: {{ order.total_price }}</h5>
+                <h6>Total order price: {{ order.total_price }}</h6>
+                {% if order.discount %}
+                <h6>Coupon: {{ order.coupon }}</h6>
+                <h6>Discount: {{ order.discount }}</h6>
+                <h6>Final order price: {{ order.final_price }}</h6>
+                {%endif %}
             </div>
             <div class="col-md-8">
                 <h5>Shipping Details:</h5>

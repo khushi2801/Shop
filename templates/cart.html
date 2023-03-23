@@ -6,8 +6,8 @@
 {% block content %}
 
 <div class="container w-50 mt-3">
-    {% if cart_items %}
-    {% for item in cart_items %}
+    {% if cart.cart_items.all %}
+    {% for item in cart.cart_items.all %}
 
     <div class="card shadow p-3 mb-4 bg-white rounded">
         <div class="row no-gutters">
@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-sm-1">
                         {% if item.quantity > 1 %}
-                        <button type="button" class="btn btn-primary" 
+                        <button type="button" class="btn btn-primary"
                             onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=item.quantity|add:-1 %}'"
                             style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">-</button>
                         {% else %}
@@ -42,11 +42,11 @@
                             style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">-</button>
                         {% endif %}
                     </div>
-                    <div class="col-sm-1 text-secondary text-center" style="margin-left: 10px;">
+                    <div class="col-sm-1 text-secondary text-center">
                         {{ item.quantity }}
                     </div>
                     <div class="col-sm-1 text-center">
-                        <button type="button" class="btn btn-primary" 
+                        <button type="button" class="btn btn-primary"
                             onclick="location.href='{% url 'clothstore:update_cart_items' product_id=item.product.id quantity=item.quantity|add:1 %}'"
                             style="display: flex; justify-content: center; width: 30px; height: 30px; line-height: 15px; border-radius: 50%; font-weight: bold;">+</button>
                     </div>
@@ -71,13 +71,54 @@
 
     {% endfor %}
 
-    <div class="text-center">
-        <h4> Total cart price: {{ total_cart_price }} </h4>
+    <div class="text-center mb-5">
+        <h4> Total cart price: {{ cart.total_price }} </h4>
+    </div>
+
+    {% if unused_coupons %}
+    <div class="row justify-content-center mb-3">
+        <div class="col-sm-2 m-3">
+            <p class="mt-4">Select Coupon:</p>
+        </div>
+        {% for coupon in unused_coupons %}
+        <div class="col-sm-2 p-0 m-3">
+            <div class="card align-items-center">
+                <a class="card-flex stretched-link text-decoration-none"
+                    href="{% url 'clothstore:apply_coupon' coupon.code%}">
+                    <div class="card-body text-center p-1">
+                        <h5 class="card-title">{{ coupon.code }}</h5>
+                        {% if coupon.amount %}
+                        <p class="card-text">Rs. {{ coupon.amount }} off</p>
+                        {% else %}
+                        <p class="card-text">{{ coupon.percentage }}% off</p>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-md-3" style="text-align: right;">Have coupon code?</div>
+            <div class="col-md-3">
+                <form method="POST" action="{% url 'clothstore:cart' %}">
+                    {% csrf_token %}
+                    <div class="form-group"> {{ coupon_form.code }} </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary btn-block">Apply</button>
+                </form>
+            </div>
+        </div>
+
+    <div class="text-center mt-5">
+        <h4> Final cart price: {{ cart.final_price }} </h4>
     </div>
 
     <div class="d-flex justify-content-center mt-4">
-        <button type="submit" class="btn btn-primary"
-            onclick="location.href='/clothstore/checkout/'">Checkout</button>
+        <button type="submit" class="btn btn-primary" onclick="location.href='/clothstore/checkout/'">Checkout</button>
     </div>
 
     {% else %}

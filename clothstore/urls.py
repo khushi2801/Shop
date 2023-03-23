@@ -24,11 +24,14 @@ urlpatterns = [
     path('home/', views.home_view, name='home'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('buy_now/<int:product_id>', views.buy_now, name='buy_now'),
+
     path('my_order/', views.my_order_view, name='my_order'),
     path('order_summary/<int:order_id>/', views.order_operations, name='order_summary'),
     path('generate_pdf/<int:order_id>/', views.generate_pdf, name='generate_pdf'),
     path('cancel_order/<int:order_id>/', views.order_operations, name='cancel_order'),
+    
     path('cart/', views.cart_view, name='cart'),
+    path('apply_coupon/<str:coupon_code>', views.apply_coupon, name='apply_coupon'),
     path('update_cart_items/<int:product_id>/<int:quantity>/', views.update_cart_items, name='update_cart_items'),
     path('checkout/', views.checkout, name='checkout'),
     
