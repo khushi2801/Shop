@@ -4,13 +4,8 @@ from .forms import UserForm, UserAuthenticationForm, ProductForm, UserUpdateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import re
-import datetime
-import json
+import re, datetime
 from django.forms import model_to_dict
-from decimal import Decimal
-from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models.fields.files import ImageFieldFile
 from django.http import HttpResponse
 from weasyprint import HTML
 from django.template.loader import render_to_string
