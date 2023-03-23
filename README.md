@@ -1,11 +1,11 @@
 # Shop
 E-commerce website using Django
 
-Features:
-User Login/Register
-Product Admin Login/Register
-Product Category Filter/Search
-Product Add/Delete/Update
-Add to Cart
-Coupon/Discount Options
+**Features:** <br>
+User Login/Register <br>
+Product Admin Login/Register <br>
+Product Category Filter/Search <br>
+Product Add/Delete/Update <br>
+Add to Cart <br>
+Coupon/Discount Options <br>
 Purchase/Receipt Options
