@@ -21,7 +21,6 @@ urlpatterns = [
     path('delete_product/<int:product_id>', views.delete_product_view, name='delete_product'),
 
     # Customer side
-    path('home/', views.home_view, name='home'),
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('buy_now/<int:product_id>', views.buy_now, name='buy_now'),
 

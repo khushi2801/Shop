@@ -228,8 +228,8 @@ def delete_product_view(request, product_id):
 def home_view(request):
     # Get all products
     product_list = Product.objects.all()
-    
-    return render(request, "home.html", {"product_list": product_list})
+    context = {"product_list": product_list}
+    return render(request, "home.html", context=context)
 
 
 # View for adding product to cart
