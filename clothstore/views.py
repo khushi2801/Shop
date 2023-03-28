@@ -9,6 +9,7 @@ from django.forms import model_to_dict
 from django.http import HttpResponse
 from weasyprint import HTML
 from django.template.loader import render_to_string
+from .decorators import product_admin_required
 
 
 # View for user and product admin signup
@@ -35,7 +36,7 @@ def signup_view(request):
             if form.cleaned_data['user_type'] == "ProductAdmin":
                 return redirect("/clothstore/dashboard")
             else:
-                return redirect("/clothstore/home")
+                return redirect("/")
         else:
             messages.error(request, "Invalid information!")
     
@@ -64,7 +65,7 @@ def login_view(request):
                 if user.user_type == "ProductAdmin":
                     return redirect("/clothstore/dashboard/")
                 else:
-                    return redirect("/clothstore/home/")
+                    return redirect("/")
             else:
                 messages.error(request, "Invalid email or password")
         else:
@@ -80,7 +81,7 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     messages.info(request, "You have successfully logged out")
-    return redirect("/clothstore/login")
+    return redirect("/")
 
 
 # View for displaying profile details
@@ -124,12 +125,14 @@ def update_profile_view(request):
 # Product Admin side
 # Dashboard view
 @login_required
+@product_admin_required
 def dashboard_view(request):
     return render(request, "dashboard.html")
 
 
 # View for adding product
 @login_required
+@product_admin_required
 def add_product_view(request):
     # If form is submitted check for form validity
     if request.method == "POST":
@@ -154,6 +157,7 @@ def add_product_view(request):
 
 # View for displaying list of products
 @login_required
+@product_admin_required
 def view_products_view(request):
     # Get all products
     product_list = Product.objects.filter(
@@ -165,6 +169,7 @@ def view_products_view(request):
 
 # View for displaying product detail
 @login_required
+@product_admin_required
 def product_detail_view(request, product_id):
     # Get product
     p = Product.objects.get(id=product_id)
@@ -178,6 +183,7 @@ def product_detail_view(request, product_id):
 
 # View for updating product detail
 @login_required
+@product_admin_required
 def update_product_view(request, product_id):
     # Get product
     product = get_object_or_404(Product, id=product_id)
@@ -208,6 +214,7 @@ def update_product_view(request, product_id):
 
 # View for deleting product
 @login_required
+@product_admin_required
 def delete_product_view(request, product_id):
     # Get product
     product = get_object_or_404(Product, id=product_id)
@@ -224,7 +231,7 @@ def delete_product_view(request, product_id):
 
 # Customer side
 # Home view
-@login_required
+# @login_required
 def home_view(request):
     # Get all products
     product_list = Product.objects.all()
@@ -328,6 +335,7 @@ def generate_pdf(request, order_id):
 # View for displaying cart items
 @login_required
 def cart_view(request):
+    print("yes")
     # Get user cart and coupons available
     cart, created = Cart.objects.get_or_create(user=request.user)
     coupons = Coupon.objects.all()
@@ -344,9 +352,12 @@ def cart_view(request):
         try:
             coupon = Coupon.objects.get(code=coupon_code)
             user_coupon, created = UsedCoupon.objects.get_or_create(user=request.user, coupon=coupon)
-            cart.user_coupon = user_coupon
-            cart.apply_coupon()
-            messages.success(request, f"Coupon '{coupon_code}' applied successfully.")
+            if user_coupon.active:
+                cart.user_coupon = user_coupon
+                cart.apply_coupon()
+                messages.success(request, f"Coupon '{coupon_code}' applied successfully.")
+            else:
+                messages.error(request, f"Invalid coupon code '{coupon_code}'")
         except UsedCoupon.DoesNotExist:
             messages.error(request, f"Invalid coupon code '{coupon_code}'")
         
