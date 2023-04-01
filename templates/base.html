@@ -46,7 +46,7 @@
       {% if request.user.user_type == "ProductAdmin" %}
       <a class="navbar-brand" href="/clothstore/dashboard/">Shop</a>
       {% elif request.user.user_type == "Customer" %}
-      <a class="navbar-brand" href="/clothstore/home/">Shop</a>
+      <a class="navbar-brand" href="/">Shop</a>
       {% endif %}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
@@ -72,8 +72,8 @@
         {% elif request.user.user_type == "Customer" %}
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/home/' or '/clothstore/product_detail/' in request.path %}active{% endif %}"
-              href="/clothstore/home">Home</a>
+            <a class="nav-link {% if request.path == '/' or '/clothstore/product_detail/' in request.path %}active{% endif %}"
+              href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if request.path == '/clothstore/my_order/' or '/clothstore/order_summary/' in request.path %}active{% endif %}"
@@ -104,6 +104,10 @@
             <a class="nav-link" href="/clothstore/login">Login</a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="/clothstore/signup">Sign Up</a>
+          </li>
+
           {% endif %}
         </ul>
 
@@ -120,9 +124,15 @@
 
   {% if '/clothstore/generate_pdf/' not in request.path %}
   <footer class="fixed-bottom mt-auto text-center text-light bg-dark py-1">
-    <small>Copyright </small> &copy; <small> 2023 Khushi Kamat. All Rights Reserved</small>
+    <small>Copyright </small> &copy; <small> <span id="currentYear"></span> Khushi Kamat. All Rights Reserved</small>
   </footer>
   {% endif %}
+
+  <script>
+    var currentYear = new Date().getFullYear();
+    document.getElementById("currentYear").textContent = currentYear;
+  </script>
+  
 </body>
 
 </html>
