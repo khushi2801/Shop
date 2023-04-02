@@ -1,13 +1,17 @@
 from django import forms
-from .models import MyUser, Product, UserProfile
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
+from .models import MyUser, Product, UserProfile
 
+
+# Choices for User Type field in UserForm
 USER_TYPE_CHOICES = (
     ('Customer', 'Customer'), 
     ('ProductAdmin', 'Product Admin'),
     )
 
+
+# Choices for Product Category field in ProductForm
 PRODUCT_CATEGORY_CHOICES = (
     ('Tops', 'Tops'),
     ('Shirts', 'Shirts'),
@@ -15,6 +19,8 @@ PRODUCT_CATEGORY_CHOICES = (
     ('Jeans', 'Jeans'),
     )
 
+
+# Choices for Product Size field in ProductForm
 PRODUCT_SIZE_CHOICES = (
     ('XS', 'XS'),
     ('S', 'S'), 
@@ -24,9 +30,25 @@ PRODUCT_SIZE_CHOICES = (
     )
 
 
-# Form to take user details during signup
 class UserForm(UserCreationForm):
-    user_type = forms.ChoiceField(required=True, widget=forms.RadioSelect(attrs={'class': 'no-bullets'}), choices=USER_TYPE_CHOICES)
+    """
+    A form that inherits from Django's built-in UserCreationForm and adds additional fields for creating a new user.
+
+    Attributes:
+        user_type: CharField - The user's type
+        name: CharField - The user's name
+        email: EmailField - The user's email address
+        password1: CharField - The user's password
+        password2: CharField - The user's confirmed password
+
+    Meta:
+        model: MyUser - The model that the form corresponds to
+        fields: list - The fields to include in the form
+
+    Methods:
+        clean(): A validation function that cleans and validates the form data
+    """
+    user_type = forms.ChoiceField(required=True, widget=forms.RadioSelect(), choices=USER_TYPE_CHOICES)
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus':'autofocus', 'placeholder': 'Enter your name'}))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}))
@@ -36,21 +58,41 @@ class UserForm(UserCreationForm):
         model = MyUser
         fields = ['user_type', 'name', 'email', 'password1', 'password2']
 
-    # Clean Validation Function
     def clean(self):
-        super(UserForm, self).clean()       # Data from the Form is fetched using super function
+        super(UserForm, self).clean()
         email = self.cleaned_data.get('email')
         return self.cleaned_data
 
 
-# Form to take user details during login
 class UserAuthenticationForm(forms.Form):
+    """
+    A form to authenticate a user. This form accepts email and password for authentication.
+
+    Attributes:
+        email: EmailField - The user's email address
+        password: CharField - The user's password
+    """
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Enter password'}))
 
 
-# Form to take product details during add and update product
-class ProductForm(forms.ModelForm):    
+class ProductForm(forms.ModelForm):
+    """
+    A form for adding and updating product details. This form accepts product category, name, brand, size, price, and image.
+
+    Attributes:
+        category: ChoiceField - The product's category
+        name: CharField - The name of the product
+        brand: CharField - The brand of the product
+        size: ChoiceField - The size of the product
+        price: NumberInput - The price of the product
+        image: ClearableFileInput - An image of the product
+
+    Meta:
+        model: Product - The model that the form corresponds to
+        fields: list - The fields to include in the form
+        widgets: dict - The widgets to use for each field
+    """
     class Meta:
         model = Product
         fields = ['category', 'name', 'brand', 'size', 'price', 'image']
@@ -64,8 +106,18 @@ class ProductForm(forms.ModelForm):
         }
 
 
-# Form to take user details during profile update
 class UserUpdateForm(forms.ModelForm):
+    """
+    A form for updating user information. This form accepts user's name and email.
+
+    Attributes:
+        name: CharField - The user's name
+        email: EmailField - The user's email address
+
+    Meta:
+        model: MyUser - The model that the form corresponds to
+        fields: list - The fields to include in the form
+    """
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'autofocus':'autofocus', 'placeholder': 'Enter your name'}))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter your email'}))
 
@@ -74,8 +126,25 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['name', 'email']
 
 
-# Form to take user additional details during profile update
 class ProfileUpdateForm(forms.ModelForm):
+    """
+    A form for updating user's profile details. This form accepts user's date of birth, address, city, country, 
+    state, contact, pin, and image.
+
+    Attributes:
+        dob: DateField - The user's date of birth
+        address: CharField - The user's street address
+        city: CharField - The user's city
+        country: CharField - The user's country
+        state: CharField - The user's state
+        contact: PhoneNumberField - The user's phone number
+        pin: CharField - The user's postal code
+        image: ImageField - An image of the user
+
+    Meta:
+        model: UserProfile - The model that the form corresponds to
+        fields: list - The fields to include in the form
+    """
     dob = forms.DateField(label="Date of Birth", widget=forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Enter Date of Birth'}))
     address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter address'}))
     city = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter city'}))
@@ -90,6 +159,11 @@ class ProfileUpdateForm(forms.ModelForm):
         fields = ['dob', 'address', 'city', 'state', 'country', 'contact', 'pin', 'image']
 
 
-# Form to take user additional details during profile update
 class CouponApplyForm(forms.Form):
+    """
+    A form for applying coupon to cart. This form accepts coupon code.
+
+    Attributes:
+        code: CharField - The code given by user
+    """
     code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Coupon Code'}))

@@ -4,32 +4,28 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="container w-25 mt-5">
-    <form method="POST" enctype="multipart/form-data">
-
-        {% csrf_token %}
-
-        <div class="container text-center">
-            {% for field in add_product_form %}
-            <div class="form-outline mb-2">
-                <label class="form-label"> </label><br>
-                {{ field }}
+    <div class="container w-25 mt-5">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container text-center">
+                {% for field in add_product_form %}
+                    <div class="form-outline mb-2">
+                        <label class="form-label"> </label><br>
+                        {{ field }}
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
 
-        <div class="d-flex justify-content-center mt-5">
-            <button type="submit" class="btn btn-primary">Add</button>
-        </div>
+            <div class="d-flex justify-content-center mt-5">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
 
-        <div class="container text-center mt-5">
-            {% for message in messages %}
-            <strong> {{ message }} </strong>
-            {% endfor %}
-        </div>
+            <div class="container text-center mt-5">
+                {% for message in messages %}
+                    <strong> {{ message }} </strong>
+                {% endfor %}
+            </div>
 
-    </form>
-</div>
-
+        </form>
+    </div>
 {% endblock %}

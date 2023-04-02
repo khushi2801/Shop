@@ -4,12 +4,11 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="container text-center mt-5">
-    {% for message in messages %}
-    <strong> {{ message }} </strong> <br>
-    {% endfor %}
-</div>
+    <div class="container text-center mt-5">
+        {% for message in messages %}
+            <strong> {{ message }} </strong> <br>
+        {% endfor %}
+    </div>
 
 {% comment %} {% if user.is_authenticated %}
 <div class="alert alert-success alert-dismissible fade show mb-0" role="alert">

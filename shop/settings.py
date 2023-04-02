@@ -19,7 +19,6 @@ DEBUG_TOOLBAR_PATCH_SETTINGS = False
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -30,24 +29,22 @@ SECRET_KEY = 'django-insecure-z%!pp75kpk-*$iotsqzzms)_htldacimu7ddp)1iagno&wf0x@
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
-
 INSTALLED_APPS = [
+    'bootstrap4',
+    'clothstore',
+    'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'clothstore',
-    'debug_toolbar',
-    'phonenumber_field',
-    'bootstrap4',
-    'bootstrap_datepicker_plus',
-    'widget_tweaks',
     'future',
+    'phonenumber_field',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -81,10 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'shop.wsgi.application'
 
-
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -92,10 +86,7 @@ DATABASES = {
     }
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -111,54 +102,34 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'Asia/Kolkata'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#     '/var/www/static',
-# ]
-
-
-# AUTHENTICATION_BACKENDS = [    
-#     'django.contrib.auth.backends.ModelBackend',
-#     ]
-
+# Custom user model used for authentication
 AUTH_USER_MODEL = 'clothstore.MyUser'
 
-# LOGIN_REDIRECT_URL = 'home/'
-
-# Authentication backends
+# Authentication backend for user authentication
 AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
     )
 
-# Base url to serve media files  
+# Media files  
 MEDIA_URL = '/media/'  
-    
-# Path where media is stored  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+# List of IP addresses that are allowed to access Django Debug Toolbar
 INTERNAL_IPS = [
     '127.0.0.1',
 ]

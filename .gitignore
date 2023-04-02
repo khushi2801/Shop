@@ -15,7 +15,6 @@ __pycache__/
 *.map
 
 # Static files
-/static/
 /media/
 
 # Backup files # 
