@@ -1,112 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    {% block title %}
-    {% endblock %}
-  </title>
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
 
-  {% load static %}
-  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
-</head>
+    {% load static %}
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet"/>
+  </head>
 
-<body>
+  <body>
 
-  {% if show_navbar_footer %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      {% if request.user.user_type == "ProductAdmin" %}
-      <a class="navbar-brand" href="/clothstore/dashboard/">Shop</a>
-      {% elif request.user.user_type == "Customer" %}
-      <a class="navbar-brand" href="/">Shop</a>
-      {% endif %}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
-          class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    {% if show_navbar_footer %}
+      <header class="header">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            {% if request.user.user_type == "ProductAdmin" %}
+            <a class="navbar-brand" href="/clothstore/dashboard/">Home</a>
+            {% else %}
+            <a class="navbar-brand" href="/">Home</a>
+            {% endif %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        {% if request.user.user_type == "ProductAdmin" %}
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/dashboard/' %}active{% endif %}"
-              href="/clothstore/dashboard">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/add_product/' %}active{% endif %}"
-              href="/clothstore/add_product">Add Product</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/view_products/' or '/clothstore/product_detail/' in request.path or '/clothstore/update_product/' in request.path or '/clothstore/delete_product/' in request.path %}active{% endif %}"
-              href="/clothstore/view_products">View Products</a>
-          </li>
-        </ul>
+              {% if request.user.user_type == "ProductAdmin" %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothstore/add_product/' %}active{% endif %}"
+                    href="/clothstore/add_product">Add Product</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothstore/view_products/' or '/clothstore/product_detail/' in request.path or '/clothstore/update_product/' in request.path or '/clothstore/delete_product/' in request.path %}active{% endif %}"
+                    href="/clothstore/view_products">View Products</a>
+                </li>
+              </ul>
 
-        {% elif request.user.user_type == "Customer" %}
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/' or '/clothstore/product_detail/' in request.path %}active{% endif %}"
-              href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/my_order/' or '/clothstore/order_summary/' in request.path %}active{% endif %}"
-              href="/clothstore/my_order">Orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/cart/' %}active{% endif %}"
-              href="/clothstore/cart">Cart</a>
-          </li>
+              {% elif request.user.user_type == "Customer" %}
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothstore/my_order/' or '/clothstore/order_summary/' in request.path %}active{% endif %}"
+                    href="/clothstore/my_order">Orders</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothstore/cart/' %}active{% endif %}"
+                    href="/clothstore/cart">Cart</a>
+                </li>
 
-        </ul>
-        {% endif %}
+              </ul>
+              {% endif %}
 
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          {% if user.is_authenticated %}
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if user.is_authenticated %}
 
-          <li class="nav-item">
-            <a class="nav-link {% if request.path == '/clothstore/profile/' or '/clothstore/update_profile/' in request.path %}active{% endif %}"
-              href="/clothstore/profile">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/clothstore/logout">Logout</a>
-          </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothstore/profile/' or '/clothstore/update_profile/' in request.path %}active{% endif %}"
+                    href="/clothstore/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/clothstore/logout">Logout</a>
+                </li>
 
-          {% else %}
+                {% else %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="/clothstore/login">Login</a>
-          </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/clothstore/login">Login</a>
+                </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/clothstore/signup">Sign Up</a>
-          </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/clothstore/signup">Sign Up</a>
+                </li>
 
-          {% endif %}
-        </ul>
+                {% endif %}
+              </ul>
 
-      </div>
-    </div>
-  </nav>
-  {% endif %}
+            </div>
+          </div>
+        </nav>
+      </header>
+    {% endif %}
 
-  {% block content %}
-  {% endblock %}
+    <main class="main-content">
+      {% block content %}
+      {% endblock %}
+    </main>
 
-  {% if show_navbar_footer %}
-  <footer class="fixed-bottom mt-auto text-center text-light bg-dark py-1">
-    <small>Copyright </small> &copy; <small> <span id="currentYear"></span> Khushi Kamat. All Rights Reserved</small>
-  </footer>
-  {% endif %}
+    {% if show_navbar_footer %}
+      <footer class="footer">
+        <div class="footer-items">
+          <a href="#">About Us</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <p>Copyright &copy; <span id="year"></span> Khushi Kamat | All Rights Reserved</p>
+      </footer>
+    {% endif %}
 
-  <script>
-    var currentYear = new Date().getFullYear();
-    document.getElementById("currentYear").textContent = currentYear;
-  </script>
-  
-</body>
-
+    <script>
+      var currentYear = new Date().getFullYear();
+      document.getElementById("year").textContent = currentYear;
+    </script>
+    
+  </body>
 </html>

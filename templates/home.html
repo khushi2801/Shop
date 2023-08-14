@@ -14,17 +14,15 @@
         {% for product in product_list %}
             <div class="col-md-2 mb-4">
                 <div class="card">
-                    <div class="card" style="border: none;">
-                        <a class="card-block stretched-link text-decoration-none"
-                            href="{% url 'clothstore:product_detail' product.id %}">
-                            <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.title }}"
-                                style="object-fit: cover; height: 200px;">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text">{{ product.price }}</p>
-                            </div>
-                        </a>
-                    </div>
+                    <a class="card-block stretched-link text-decoration-none"
+                        href="{% url 'clothstore:product_detail' product.id %}">
+                        <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.title }}"
+                            style="object-fit: cover; height: 200px;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.price }}</p>
+                        </div>
+                    </a>
                     <div class="text-center my-3">
                         <div class="btn-group">
                             <div class="mx-3">
