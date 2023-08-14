@@ -54,7 +54,7 @@ def signup_view(request):
     
     # Render signup form if request method is not POST
     form = UserForm()
-    context = {'show_navbar_footer': False, "signup_form": form, "error_list": error_list}
+    context = {'show_navbar_footer': True, "signup_form": form, "error_list": error_list}
     return render(request, "signup.html", context=context)
 
 
@@ -85,7 +85,7 @@ def login_view(request):
 
     # Render login form if request method is not POST
     form = UserAuthenticationForm()
-    context = {'show_navbar_footer': False, "login_form": form}
+    context = {'show_navbar_footer': True, "login_form": form}
     return render(request, "login.html", context=context)
 
 

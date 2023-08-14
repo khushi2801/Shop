@@ -31,4 +31,4 @@ __pycache__/
 .history
 
 # Virtual environment directory
-myenv/
+clothstore_env/
