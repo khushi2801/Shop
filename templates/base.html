@@ -23,37 +23,45 @@
       <header class="header">
         <nav class="navbar navbar-expand-lg">
           <div class="container-fluid">
-            {% if request.user.user_type == "ProductAdmin" %}
-            <a class="navbar-brand" href="/clothstore/dashboard/">Home</a>
+            {% if request.user.user_type == "Merchant" %}
+            <a class="navbar-brand" href="/store/dashboard/">Store</a>
             {% else %}
-            <a class="navbar-brand" href="/">Home</a>
+            <a class="navbar-brand" href="/">Store</a>
             {% endif %}
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
                 class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-              {% if request.user.user_type == "ProductAdmin" %}
+              {% if request.user.user_type == "Merchant" %}
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/clothstore/add_product/' %}active{% endif %}"
-                    href="/clothstore/add_product">Add Product</a>
+                  <a class="nav-link {% if request.path == '/store/dashboard/' %}active{% endif %}"
+                    href="/store/dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/clothstore/view_products/' or '/clothstore/product_detail/' in request.path or '/clothstore/update_product/' in request.path or '/clothstore/delete_product/' in request.path %}active{% endif %}"
-                    href="/clothstore/view_products">View Products</a>
+                  <a class="nav-link {% if request.path == '/clothes/add_product/' %}active{% endif %}"
+                    href="/clothes/add_product">Add Product</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/clothes/view_products/' or '/clothes/product_detail/' in request.path or '/clothes/update_product/' in request.path or '/clothes/delete_product/' in request.path %}active{% endif %}"
+                    href="/clothes/view_products">View Products</a>
                 </li>
               </ul>
 
               {% elif request.user.user_type == "Customer" %}
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/clothstore/my_order/' or '/clothstore/order_summary/' in request.path %}active{% endif %}"
-                    href="/clothstore/my_order">Orders</a>
+                  <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                    href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/clothstore/cart/' %}active{% endif %}"
-                    href="/clothstore/cart">Cart</a>
+                  <a class="nav-link {% if request.path == '/order/my_order/' or '/order/order_summary/' in request.path %}active{% endif %}"
+                    href="/order/my_order">Orders</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link {% if request.path == '/cart/my_cart/' %}active{% endif %}"
+                    href="/cart/my_cart">Cart</a>
                 </li>
 
               </ul>
@@ -63,21 +71,21 @@
                 {% if user.is_authenticated %}
 
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/clothstore/profile/' or '/clothstore/update_profile/' in request.path %}active{% endif %}"
-                    href="/clothstore/profile">Profile</a>
+                  <a class="nav-link {% if request.path == '/account/profile/' or '/account/update_profile/' in request.path %}active{% endif %}"
+                    href="/account/profile">Profile</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/clothstore/logout">Logout</a>
+                  <a class="nav-link" href="/account/logout">Logout</a>
                 </li>
 
                 {% else %}
 
                 <li class="nav-item">
-                  <a class="nav-link" href="/clothstore/login">Login</a>
+                  <a class="nav-link" href="/account/login">Login</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="/clothstore/signup">Sign Up</a>
+                  <a class="nav-link" href="/account/signup">Sign Up</a>
                 </li>
 
                 {% endif %}
