@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %} Product Details
+{% endblock %}
+
+{% block content %}
+    <div class="container text-center my-3">
+        {% for message in messages %}
+            <strong> {{ message }} </strong><br>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-12">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            {% for key, value in product.items %}
+                                {% if key != "id" and key != "seller" and key != "image" %}
+                                    <div class="row">
+                                        <div class="col-sm-3"> <h6 class="mb-0">{{ key|title }}</h6> </div>
+                                        <div class="col-sm-9 text-secondary"> {{ value }} </div>
+                                    </div>
+                                    <hr>
+                                {% elif key == "image" %}
+                                    <div class="row">
+                                        <div class="col-sm-3"> <h6 class="mb-0">{{ key|title }}</h6> </div>
+                                        <div class="col-sm-9 text-secondary"> <img src="{{ product.image.url }}" height="200"/> </div>
+                                    </div>
+                                    <hr>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if request.user.user_type == "Merchant" %}
+        <div class="text-center">
+            <div class="btn-group mt-1 mb-3">
+                <div class="mx-3">
+                    <button type="submit" class="btn btn-primary"
+                        onclick="location.href='/clothes/update_product/{{product.id}}'">Update</button>
+                </div>
+                <div class="mx-3">
+                    <button type="submit" class="btn btn-danger"
+                        onclick="location.href='/clothes/delete_product/{{product.id}}'">Delete</button>
+                </div>
+            </div>
+        </div>
+    {% elif request.user.user_type == "Customer" %}
+        <div class="text-center">
+            <div class="btn-group mt-1 mb-3">
+                <div class="mx-3">
+                    <button type="submit" class="btn btn-primary"
+                        onclick="location.href='/store/add_to_cart/{{product.id}}'">Add to cart</button>
+                </div>
+                <div class="mx-3">
+                    <button type="submit" class="btn btn-primary"
+                        onclick="location.href='/store/buy_now/{{product.id}}'">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

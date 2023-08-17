@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %} Order Summary
+{% endblock %}
+
+{% block content %}
+    <div class="container w-50 mt-3">
+        <h3 class="my-3 text-center">Order Summary</h3>
+
+        <div class="card shadow p-3 mb-4 bg-white rounded">
+            {% for item in order.orderitem_set.all %}
+                <div class="card my-2" style="border: none;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4 text-center">
+                            <img class="border-primary" src="http://127.0.0.1:8000{{item.product.image.url}}" style="object-fit: cover; width: 25%;">
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{ item.product.name }}</h5>                    
+                            <div class="row">
+                                <div class="col-sm-9 text-secondary"> x {{ item.quantity }} </div>
+                                <div class="col-sm-3"> {{ item.final_item_price }} </div>
+                            </div>
+                            <hr class="my-2">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="row no-gutters mt-3">
+                <div class="col-md-4">
+                    <h6>Total order price: {{ order.total_price }}</h6>
+                    {% if order.discount %}
+                        <h6>Coupon: {{ order.coupon }}</h6>
+                        <h6>Discount: {{ order.discount }}</h6>
+                        <h6>Final order price: {{ order.final_price }}</h6>
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <h5>Shipping Details:</h5>
+                    <h6>Billing Address: {{ order.billing_address }}</h6>
+                    <h6>Contact: {{ order.contact }}</h6>
+                </div>
+            </div>
+
+            {% if show_print_button %}
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-primary" onclick="location.href='{% url 'order:generate_pdf' order.id %}'">Print</button>
+                </div>
+            {% endif %}
+        </div>  
+        
+        <div class="container text-center mt-5">
+            {% for message in messages %}
+                <strong> {{ message }} </strong><br>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

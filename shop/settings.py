@@ -34,7 +34,12 @@ ALLOWED_HOSTS = []
 # Application definition
 INSTALLED_APPS = [
     'bootstrap4',
-    'clothstore',
+    'features.account',
+    'features.cart',
+    'features.clothes',
+    'features.store',
+    'features.order',
+    'features.payment',
     'debug_toolbar',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,7 +123,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model used for authentication
-AUTH_USER_MODEL = 'clothstore.MyUser'
+AUTH_USER_MODEL = 'account.MyUser'
 
 # Authentication backend for user authentication
 AUTHENTICATION_BACKENDS = (

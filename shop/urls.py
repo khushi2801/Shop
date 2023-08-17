@@ -17,13 +17,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from clothstore import views
+from features.store.views import home
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view, name='home'),
-    path('clothstore/', include('clothstore.urls')),
+    path('', home, name='home'),
+    path('account/', include('features.account.urls')),
+    path('cart/', include('features.cart.urls')),
+    path('clothes/', include('features.clothes.urls')),
+    path('store/', include('features.store.urls')),
+    path('order/', include('features.order.urls')),
+    path('payment/', include('features.payment.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
 

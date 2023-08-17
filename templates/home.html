@@ -14,24 +14,26 @@
         {% for product in product_list %}
             <div class="col-md-2 mb-4">
                 <div class="card">
-                    <a class="card-block stretched-link text-decoration-none"
-                        href="{% url 'clothstore:product_detail' product.id %}">
-                        <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.title }}"
-                            style="object-fit: cover; height: 200px;">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.price }}</p>
-                        </div>
-                    </a>
+                    <div class="card" style="border: none;">
+                        <a class="card-block stretched-link text-decoration-none"
+                            href="{% url 'clothes:product_detail' product.id %}">
+                            <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.title }}"
+                                style="object-fit: cover; height: 200px;">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.price }}</p>
+                            </div>
+                        </a>
+                    </div>
                     <div class="text-center my-3">
                         <div class="btn-group">
                             <div class="mx-3">
                                 <button type="submit" class="btn btn-primary"
-                                    onclick="location.href='/clothstore/buy_now/{{product.id}}'">Add to cart</button>
+                                    onclick="location.href='/store/add_to_cart/{{product.id}}'">Add to cart</button>
                             </div>
                             <div class="mx-3">
                                 <button type="submit" class="btn btn-primary"
-                                    onclick="location.href='/clothstore/buy_now/{{product.id}}'">Buy Now</button>
+                                    onclick="location.href='/store/buy_now/{{product.id}}'">Buy Now</button>
                             </div>
                         </div>
                     </div>
