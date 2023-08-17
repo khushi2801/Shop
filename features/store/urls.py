@@ -1,5 +1,5 @@
 from django.urls import path
-from features.store.views import add_to_cart, buy_now, dashboard_view
+from features.store.views import add_to_cart, buy_now, dashboard
 
 
 app_name = 'store'
@@ -9,5 +9,5 @@ urlpatterns = [
     path('buy_now/<int:product_id>', buy_now, name='buy_now'),
 
     # URLs for Merchants
-    path('dashboard/', dashboard_view, name='dashboard'),
+    path('dashboard/', dashboard, name='dashboard'),
 ]

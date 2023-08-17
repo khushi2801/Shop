@@ -86,7 +86,7 @@ def buy_now(request, product_id):
 # Views for Merchants
 @login_required
 @seller_required
-def dashboard_view(request):
+def dashboard(request):
     """
     Renders the dashboard for the merchant.
     """
