@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
+
 
 # Prevents debug toolbar from patching Django's internal settings, which can cause conflicts with other middleware or settings.
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
@@ -133,6 +135,9 @@ AUTHENTICATION_BACKENDS = (
 # Media files  
 MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# Payment API
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
 # List of IP addresses that are allowed to access Django Debug Toolbar
 INTERNAL_IPS = [

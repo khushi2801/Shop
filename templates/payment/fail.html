@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Payment Fail
+{% endblock %}
+
+{% block content %}
+    <div class="payment-message-container">
+        <img src="{% static '/images/fail_icon.png' %}" class="payment-success-tick" alt="" />
+        <h2 class="fail">Payment Failed!</h2>
+        <p>We could not place your order</p>
+        <div class="payment-message-btn">
+            <a href="/cart/my_cart/" class="btn btn-primary">Retry</a>
+        </div>
+     </div>
+{% endblock %}
+
+{% block jsextra %}
+    <script>
+        function centerVertically() {
+            const container = document.querySelector('.main-content');
+            const content = document.querySelector('.payment-message-container');
+            
+            const containerHeight = container.offsetHeight;
+            const contentHeight = content.offsetHeight;
+        
+            const paddingTop = (containerHeight - contentHeight) / 2;
+            content.style.marginTop = paddingTop + 'px';
+        }
+
+        // Call the function whenever the page loads or the window is resized
+        window.addEventListener('load', centerVertically);
+        window.addEventListener('resize', centerVertically);
+    </script>
+{% endblock %}
