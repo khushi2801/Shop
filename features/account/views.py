@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from .forms import (ProfileUpdateForm, UserAuthenticationForm, UserForm, UserUpdateForm)
 
 
-def signup(request):
+def user_signup(request):
     """
     Renders a signup form for both customers and merchants. 
     Handles form submissions, checks form validity, creates a new user account, 
@@ -42,7 +42,7 @@ def signup(request):
     return render(request, 'account/signup.html', context)
 
 
-def login(request):
+def user_login(request):
     """
     Renders a login form and handles form submissions. Checks the validity of 
     the submitted form and authenticates the user. If authentication is successful,
@@ -74,7 +74,7 @@ def login(request):
 
 
 @login_required
-def logout(request):
+def user_logout(request):
     """
     Logs out the authenticated user and redirects them to the homepage.
     """
@@ -84,7 +84,7 @@ def logout(request):
 
 
 @login_required
-def profile(request):
+def user_profile(request):
     """
     Renders the user's profile page with their profile data.
     """
