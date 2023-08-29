@@ -31,7 +31,6 @@ body {
 
 .main-content {
     flex: 1;
-    background: #E8E0D5;
 }
 
 main.main-content .container h2, .card a, p a, p a:hover {
@@ -46,8 +45,44 @@ main.main-content .container h2, .card a, p a, p a:hover {
 }
 
 .card {
-    background-color: #E9E8E4;
-    border: 1px solid #0D0000;
+    border: 1px solid #734838;
+}
+
+main.main-content .payment-message-container {
+    text-align: center;
+    margin: 30px;
+}
+
+main.main-content .expired-message-container {
+    text-align: center;
+}
+
+.payment-message-container .payment-success-tick {
+    max-width: 5%;
+    margin: auto;
+}
+
+.payment-message-container .success {
+    color: #32A62E;
+    margin-bottom: 30px;
+}
+
+.payment-message-container .fail {
+    color: #D93B3B;
+    margin-bottom: 30px;
+}
+
+.payment-message-container p {
+    color: #734838;
+    margin-bottom: 30px;
+    font-size: larger;
+}
+
+.payment-message-container .payment-message-btn {
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+    padding-top: 20px;
 }
 
 

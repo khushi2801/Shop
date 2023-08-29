@@ -10,3 +10,6 @@ __pycache__/
 
 # Virtual environment directory
 shop_env/
+
+# Environment variables
+.env

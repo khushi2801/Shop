@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Payment Success
+{% endblock %}
+
+{% block content %}
+    <div class="payment-message-container">
+        <img src="{% static '/images/success_icon.png' %}" class="payment-success-tick" alt=""/>
+        <h2 class="success">Payment Successful!</h2>
+        <p>Your order has been placed</p>
+        <div class="payment-message-btn">
+            <a href="/order/my_order/" class="btn btn-primary">View Orders</a>
+            <a href="/" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block jsextra %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Hide the header, main content, and footer initially
+            $('.header, .payment-message-container, .footer').hide();
+        
+            // Check if the payment session ID has been stored in session storage
+            const validPaymentSessionID = '{{ request.session.valid_payment_session_id }}';
+            const paymentSessionCheck = sessionStorage.getItem(validPaymentSessionID);
+        
+            // If page is displayed once redirect to other page else display success message
+            if (paymentSessionCheck) {
+                alert("Payment success page can only be viewed once!");
+                window.location.href = "/";
+            } else {
+                sessionStorage.setItem(validPaymentSessionID, 'true');
+                $('.header, .payment-message-container, .footer').show();
+            }
+        
+            // Center the content vertically
+            function centerVertically() {
+                const mainContainerHeight = $('.main-content').height();
+                const paymentContainerHeight = $('.payment-message-container').height();
+                $('.payment-message-container').css('margin-top', ((mainContainerHeight - paymentContainerHeight) / 2) + 'px');
+            }
+        
+            // Call the function whenever the page loads or the window is resized
+            $(window).on('load', centerVertically);
+            $(window).on('resize', centerVertically); 
+        });
+    </script>
+{% endblock %}
