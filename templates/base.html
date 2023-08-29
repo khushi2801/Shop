@@ -112,6 +112,9 @@
       </footer>
     {% endif %}
 
+    {% block jsextra %}
+    {% endblock %}
+
     <script>
       var currentYear = new Date().getFullYear();
       document.getElementById("year").textContent = currentYear;
