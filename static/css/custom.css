@@ -13,7 +13,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: #734838;
+    background: #522b5b;
     color: white;
     padding: 10px;
 }
@@ -33,19 +33,48 @@ body {
     flex: 1;
 }
 
-main.main-content .container h2, .card a, p a, p a:hover {
-    color: #734838;
+main.main-content .container h2, h6, .card a, p a, p a:hover {
+    color: #522b5b;
 }
 
-.btn-primary, .btn-primary:active, .btn-primary:focus, .btn-primary:active:focus, .btn-primary:hover {
-    color: #fff;
-    background-color: #734838;
-    border-color: #734838;
+.btn:focus, .btn-primary:focus, .btn-primary:active:focus {
     box-shadow: none;
 }
 
+.btn:focus-visible {
+    outline: none;
+}
+
+.btn-primary, .btn-primary:active, .btn-primary:focus {
+    color: #bf5d21;
+    background-color: transparent;
+    border-color: #bf5d21;
+}
+
+.btn-primary:hover{
+    background-color: #bf5d21;
+    border-color: #bf5d21;
+}
+
+.btn-danger, .btn-danger:active, .btn-danger:focus {
+    color: #d11a2a;
+    background-color: transparent;
+    border-color: #d11a2a;
+}
+
+.btn-danger:hover {
+    background-color: #d11a2a;
+    border-color: #d11a2a;
+}
+
+.btn-primary:active:hover, .btn-primary:focus:hover, .btn-danger:active:hover, .btn-danger:focus:hover {
+    color: #fff;
+}
+
+
+
 .card {
-    border: 1px solid #734838;
+    border: 1px solid #bf5d21;
 }
 
 main.main-content .payment-message-container {
@@ -92,7 +121,7 @@ main.main-content .expired-message-container {
     bottom: 0;
     left: 0;
     right: 0;
-    background: #734838;
+    background: #522b5b;
     color: white;
     padding: 20px;
     display: flex;
